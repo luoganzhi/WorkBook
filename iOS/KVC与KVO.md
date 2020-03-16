@@ -15,7 +15,7 @@
 # KVC
 ### key value coding -> 键值编码
 
-<img src="https://github.com/luoganzhi/WorkBook/blob/master/iOS/image/kvc.png" width="300" align=center alt="example">
+<img src="https://github.com/luoganzhi/WorkBook/blob/master/iOS/image/kvc.png" width="600" align=center alt="example">
  
  ### 本质 
  默认的点语法,其实调用的是`setValueForKey` 方法,消息传递机制,默认会按照如图所示传递消息,先查询`setKey`方法,然后`_setKey`方法,在看`accessInstanceVariablesDirectly`返回值,默认为yes,如果为yes代表能够直接访问成员变量,就按照_key,_isKey,key,isKey顺序查找,最后都没找到,就报错.

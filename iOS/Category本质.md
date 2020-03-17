@@ -26,3 +26,8 @@
 > 由于是消息传递机制,如果分类实现了initialize,那么会调用分类的initialize实例化自己,另外一定是先完成父类的初始化,才会初始化子类
 
 
+### 分类能否添加成员变量
+1. 分类不能添加成员变量,因为没有ivars数组,但是可以添加属性,但是属性只自动生成get与set方法申明,
+2. 可以用runtime方法, obj_setAssociatedObject方法设置关联对象,关联对象主要使用一个全局管理类,A sscoiationsManger.
+
+<img src="https://github.com/luoganzhi/WorkBook/blob/master/iOS/image/releatedObject.png" width="600" alt="img" align=center>

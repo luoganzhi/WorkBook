@@ -32,7 +32,10 @@ struct main_block_impl_0 {
 ### 关于__block修饰属性问题
 - __block会将修饰属性包装成一个对象,内部有__forwarding指针,指向自己,在copy的时候,栈上的_forwarding指向堆上,并且内部有保存修饰的属性
 <img src="https://github.com/luoganzhi/WorkBook/blob/master/iOS/image/forwarding.png" width=600 alt="forwarding" align=center />
+
 - 当block在栈上时, __block并不会对所修饰的属性产生强引用,但是当被copy到堆上时,会调用block_object_assgin,根据修饰的属性是strong还是weak产生对应的引用,移除的时候调用block_object_dispos函数释放对象,
 - 在mrc下__block能消除循环引用,因为__block修饰的属性并不会retain使引用计数加1,所以`self -> block -> __block` 所以不会产生循环引用;
 - __block在arc下产生的循环引用最少为3个对象,因为__block会变为对象
 
+### 关于__weak, __unsafe_unretained区别
+- 都是为了解决循环引用问题,但是weak是安全的,因为引用对象被销毁后,会将指针变为nil,而__unsafe_unretained不会,所以会产生野指针

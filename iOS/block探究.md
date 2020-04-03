@@ -30,8 +30,11 @@ struct main_block_impl_0 {
 - 在mrc下,强指针不会对block对象进行copy操作,所以如果block是stack类型block,那么block对内部对象都不会产生强引用.
 
 ### 关于__block修饰属性问题
-- __block会将修饰属性包装成一个对象,内部有__forwarding指针,指向自己,在copy的时候,栈上的_forwarding指向堆上,并且内部有保存修饰的属性
+- __block会将修饰属性包装成一个对象,内部有__forwarding指针,指向自己,在copy的时候,栈上的_forwarding指向堆上,并且内部有保存修饰的属性,所以当你在函数内部访问局部变量的时候,会通过forwarding指针找到堆上的变量,访问block修改过后的值,而不是原本栈上的值.
+> 为什么不能修改局部非静态变量? 因为2个空间不同,堆上的对象不能修改栈上的指针,因为栈上的对象生命周期不可控,同时block的作用域与局部变量的作用域不同,所以不能直接修改.
 <img src="https://github.com/luoganzhi/WorkBook/blob/master/iOS/image/forwarding.png" width=600 alt="forwarding" align=center />
+    
+
 
 - 当block在栈上时, __block并不会对所修饰的属性产生强引用,但是当被copy到堆上时,会调用block_object_assgin,根据修饰的属性是strong还是weak产生对应的引用,移除的时候调用block_object_dispos函数释放对象,
 - 在mrc下__block能消除循环引用,因为__block修饰的属性并不会retain使引用计数加1,所以`self -> block -> __block` 所以不会产生循环引用;
